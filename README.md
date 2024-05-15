@@ -1,0 +1,2 @@
+# SvelteSnyggingar
+Javascript School project
