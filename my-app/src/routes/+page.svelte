@@ -1,1 +1,9 @@
-<h1 class="text-green-400">Hello world!</h1>
+<script>
+    import Header from "../components/Header.svelte"
+    import Navigation from "../components/Navigation.svelte";
+</script>
+
+<main>
+    <Header />
+    <Navigation />
+</main>

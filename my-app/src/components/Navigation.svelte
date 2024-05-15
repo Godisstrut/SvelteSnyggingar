@@ -1,0 +1,8 @@
+<script>
+    import Button from "./Button.svelte"
+</script>
+
+<nav class="flex justify-center mt-5 gap-20">
+    <Button props="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">TriviaGuessr</Button>
+    <Button props="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">LyricGuessr</Button>
+</nav>
