@@ -1,9 +1,7 @@
 <script>
-    let buttonProps = {
-    class:[$$restProps.class]
-    }
+    export let props = "";
 </script>
 
-<button {...buttonProps}>
+<button class={props}>
     <slot />
 </button>
