@@ -1,7 +1,10 @@
 <script>
     import { onMount } from 'svelte';
+    import Button from './Button.svelte';
 
     let triviaData = [];
+    let currentIndex = 0;
+    let userAnswer = '';
 
     onMount(async () => {
         try {
@@ -12,6 +15,19 @@
             console.error('Error fetching trivia:', error);
         }
     });
+
+    function nextQuestion() {
+        if (currentIndex < triviaData.length - 1) {
+            currentIndex++;
+            userAnswer = '';
+        }
+    }
+
+    function submitAnswer(answer) {
+        console.log("Hejsan du klikade på mig!")
+        userAnswer = answer;
+        nextQuestion();
+    }
 </script>
 
 <style>
@@ -24,9 +40,13 @@
 
 <div>
     <h1>Trivia Questions</h1>
-    {#each triviaData as question}
+    {#if triviaData.length > 0}
         <div class="question">
-            <p><strong>Question:</strong> {@html question.question}</p>
+            <p><strong>Question:</strong> {@html triviaData[currentIndex].question}</p>
+            <Button class="bg-green-500" on:click={() => submitAnswer('True')}>True</Button>
+            <Button class="bg-red-500" on:click={() => submitAnswer('False')}>False</Button>
         </div>
-    {/each}
+    {:else}
+        <p>Loading questions...</p>
+    {/if}
 </div>

@@ -1,7 +1,9 @@
 <script>
-    export let props = ""; // Skapar en tom props variabel för att redigera komponenten när den används
+    let buttonProps = {
+    class:[$$restProps.class]
+    }
 </script>
 
-<button class={props}>
+<button {...buttonProps} on:click>
     <slot />
 </button>
