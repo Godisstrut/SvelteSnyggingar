@@ -3,12 +3,7 @@
    // import { ClientCredentials, ResourceOwnerPassword, AuthorizationCode } from "simple-oauth2";
    import { getLyrics, getSong } from 'genius-lyrics-api';
 
-    let client_id = "hInz4RKeI9-8TCY7-Le0d16c5nb4tO_jAc4whoKjxYdxAJf5Q1HR6IG7K_ma3_0E"
-    let client_secret = "qAjXlPKcfAmhrasofnH5Ze_46xoRiYznbUCPGxWnQK6Z0Q0MAIBhfYvIAU1A-daEHPmpfLLClMp_Q_v77jZw_w";
-    let access_token = "64pHJESFmSJZgbzRp8d7awJ621BlVDanghJ1_8mDe8geUYGn8fe3SYTJFL-vVCDP";
-
     const proxyUrl = 'https://thingproxy.freeboard.io/fetch/';
-
 
 
     /* getConfig().then(config => {
@@ -39,7 +34,7 @@
 
     onMount(async () => {
         const options = {
-            apiKey: '64pHJESFmSJZgbzRp8d7awJ621BlVDanghJ1_8mDe8geUYGn8fe3SYTJFL-vVCDP',
+            apiKey: '',
             title: 'Posthumous Forgiveness',
             artist: 'Tame Impala',
             optimizeQuery: true
