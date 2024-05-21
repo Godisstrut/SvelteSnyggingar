@@ -48,7 +48,8 @@ List_of_songs = []
 1063, # Queen
 49192, 77594, 77782 # Coldplay
 1644, 69620, 2912 # Michael Jackson
-1043468, 1326910, 1670159 # Ted gärdestad:
+1043468, 1326910, 1670159 # Ted gärdestad
+2942139, 698675, 2865735 # Post Malone
 
 
 run(host="127.0.0.1", port=8080)
