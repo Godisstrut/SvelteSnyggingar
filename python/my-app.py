@@ -1,6 +1,7 @@
 from bottle import route, run
 from lyricsgenius import Genius
 import json
+import random
 
 token = "64pHJESFmSJZgbzRp8d7awJ621BlVDanghJ1_8mDe8geUYGn8fe3SYTJFL-vVCDP"
 artists = ["Drake"]
@@ -37,7 +38,8 @@ def get_lyric_ids():
             
     return json.dumps(ids)
 
-List_of_songs = []
+List_of_songs = [3315890, 7076626, 235729, 3003630, 3209330, 3786667, 70324, 1149, 2412669, 2398213, 2378935, 2413890,
+                  353931,390407, 54643, 1063, 49192, 77594, 77782, 1644, 69620, 2912, 1043468, 1326910, 1670159, 2942139, 698675, 2865735]
 3315890, # Drake
 7076626, # Taylor Swift 
 235729, # Eminem
@@ -50,6 +52,15 @@ List_of_songs = []
 1644, 69620, 2912 # Michael Jackson
 1043468, 1326910, 1670159 # Ted gärdestad
 2942139, 698675, 2865735 # Post Malone
+
+@route("/get_random_song")
+def get_lyrics():
+    genius = Genius(token)
+    random_song = random.choice(List_of_songs)
+    lyrics = genius.lyrics(random_song)
+
+    return json.dumps(lyrics)
+    
 
 
 run(host="127.0.0.1", port=8080)
