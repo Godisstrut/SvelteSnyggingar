@@ -24,6 +24,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"genius-lyrics-api": "^3.2.1",
 		"simple-oauth2": "^5.0.0"
 	}
 }
