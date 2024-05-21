@@ -1,15 +1,16 @@
 <script>
-    import { getConfig } from './config.js';
+    //import { getConfig } from './config.js';
+   // import { ClientCredentials, ResourceOwnerPassword, AuthorizationCode } from "simple-oauth2";
+   import { getLyrics, getSong } from 'genius-lyrics-api';
 
-    let client_id;
-    let client_secret;
-    let access_token;
+    const proxyUrl = 'https://thingproxy.freeboard.io/fetch/';
 
-    getConfig().then(config => {
+
+    /* getConfig().then(config => {
         client_id = config.client_id;
         client_secret = config.client_secret;
         access_token = config.access_token;
-    });
+    }); */
 
     import { onMount } from 'svelte';
 
@@ -28,17 +29,22 @@
     }
     };
 
-    const { ClientCredentials, ResourceOwnerPassword, AuthorizationCode } = require('simple-oauth2');
+    //const { ClientCredentials, ResourceOwnerPassword, AuthorizationCode } = require('simple-oauth2');
+    
 
     onMount(async () => {
-        const response = await fetch(`https://api.genius.com/search?q=${encodeURIComponent(query)}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
-        const data = await response.json();
-        results = data.response.hits;
+        const options = {
+            apiKey: '',
+            title: 'Posthumous Forgiveness',
+            artist: 'Tame Impala',
+            optimizeQuery: true
+        };
+
+        getLyrics(options).then((lyrics) => console.log(lyrics));
+
+        getSong(options).then((song) =>
+            console.log(`${song.id} - ${song.title} - ${song.url} - ${song.albumArt} - ${song.lyrics}`)
+        );
     });
 </script>
 
