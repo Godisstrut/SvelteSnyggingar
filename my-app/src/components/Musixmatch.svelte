@@ -1,4 +1,6 @@
 <script context="module">
+  import { PUBLIC_LYRICS_APIKEY } from '$env/static/public'
+
     export async function load({ fetch, params }) {
       const track = 'Baby';
       const artist = 'Justin Bieber';
@@ -14,6 +16,8 @@
       return { props: { lyrics: data.lyrics_body || 'Lyrics not found' } };
     }
     export let lyrics;
+
+    console.log(PUBLIC_LYRICS_APIKEY)
   </script>
   
   <main>
