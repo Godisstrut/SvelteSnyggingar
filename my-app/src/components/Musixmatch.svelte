@@ -1,27 +1,18 @@
-<script context="module">
-  import { PUBLIC_LYRICS_APIKEY } from '$env/static/public'
+<!-- <script context="module">
 
-    export async function load({ fetch, params }) {
+    async function load({ fetch, params }) {
       const track = 'Baby';
       const artist = 'Justin Bieber';
-      const response = await fetch(`${API_BASE_URL}/track.get?apikey=${APIKEY}commontrack_id=5920049`);
-      
-      //const response = await fetch(`/api/lyrics?track=${track}&artist=${artist}`);
-
-
-      
-
+      const response = await fetch(`https://api.musixmatch.com/ws/1.1/track.get?apikey=${PUBLIC_LYRICS_APIKEY}commontrack_id=5920049`);
 
       const data = await response.json();
+      console.log(data)
       return { props: { lyrics: data.lyrics_body || 'Lyrics not found' } };
     }
     export let lyrics;
-
-    console.log(PUBLIC_LYRICS_APIKEY)
   </script>
   
   <main>
     <h1>Lyrics</h1>
     <p>{lyrics}</p>
-  </main>
-  
+  </main> -->
