@@ -4,16 +4,14 @@
     import Navigation from "../components/Navigation.svelte";
 
     export let data;
-    const { tracks } = data
-
-    console.log(data)
+    const { lyrics } = data
 </script>
 
 <main>
     <Header />
     <Navigation />
     <Musixmatch />
-    <h1>{tracks.track_id}</h1>
+    <p>{lyrics}</p>
     <!-- {#each tracks as track}
         <h1>{track[0]}</h1>
     {/each} -->
