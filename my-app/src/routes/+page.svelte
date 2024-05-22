@@ -1,11 +1,9 @@
+<!-- src/routes/+page.svelte -->
 <script>
-    import Genius from "../components/Genius.svelte";
-    import Header from "../components/Header.svelte"
-    import Navigation from "../components/Navigation.svelte";
+    export let props;
+    console.log('Page component - serverData:', props.serverData); // Ensure serverData is logged correctly
 </script>
 
 <main>
-    <Header />
-    <Navigation />
-    <Genius />
+    <!-- Your content here -->
 </main>
