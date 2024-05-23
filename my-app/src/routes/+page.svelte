@@ -4,7 +4,9 @@
     import Navigation from "../components/Navigation.svelte";
 
     export let data;
+    console.log("data:", data)
     const { lyrics } = data
+    console.log("lyrics:", lyrics)
 </script>
 
 <main>
