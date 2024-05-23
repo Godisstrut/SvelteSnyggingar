@@ -89,23 +89,23 @@
 </script>
 
 <div>
-    <h1 class="mt-20 text-2xl font-extrabold flex justify-center text-gray-900 dark:text-white md:text-2xl lg:text-4xl"><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-500 from-sky-300">Trivia Frågor:</span></h1>
+    <h1 class="mt-20 text-2xl font-extrabold flex justify-center text-gray-900 dark:text-white md:text-2xl lg:text-4xl"><span class="text-transparent pb-10 bg-clip-text bg-gradient-to-r to-emerald-500 from-sky-300">Trivia Frågor:</span></h1>
     {#if !quizStarted}
         {#if !questionType}
-            <div class="flex flex-col items-center gap-4 mt-20">
-                <p class="text-xl font-semibold ">Välj frågetyp</p>
+            <div class="flex flex-col items-center gap-4 mt-10">
+                <p class="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 ">Välj frågetyp</p>
                 <nav class="flex justify-center mt-5 space-x-5">
-                    <Button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => selectedQuestionType('boolean')}>Sant/Falskt</Button>
-                    <Button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => selectedQuestionType('multiple')}>Flerval</Button>
+                    <Button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full" on:click={() => selectedQuestionType('boolean')}>Sant/Falskt</Button>
+                    <Button class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-full" on:click={() => selectedQuestionType('multiple')}>Flerval</Button>
                 </nav>
             </div>
         {:else}
             <div class="flex flex-col items-center gap-4 mt-20">
                 <p class="text-xl font-semibold">Välj svårighetsgrad:</p>
                 <nav class="flex justify-center mt-5 space-x-5">
-                    <Button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => quizDifficulty('easy')}>Easy</Button>
-                    <Button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => quizDifficulty('medium')}>Medium</Button>
-                    <Button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => quizDifficulty('hard')}>Hard</Button>
+                    <Button class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-full" on:click={() => quizDifficulty('easy')}>Easy</Button>
+                    <Button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-4 px-8 rounded-full" on:click={() => quizDifficulty('medium')}>Medium</Button>
+                    <Button class="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-full" on:click={() => quizDifficulty('hard')}>Hard</Button>
                 </nav>
             </div>
         {/if}
