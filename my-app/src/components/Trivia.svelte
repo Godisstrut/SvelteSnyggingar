@@ -8,9 +8,10 @@
     let gameFinished = false;
     let quizStarted = false;
     let selectedDifficulty = '';
+    let questionType = '';
 
-    //Funktion för att hämta frågor från API, använder difficulty som parameter
-    async function fetchTriviaQuestions(difficulty) {
+    //Funktion för att hämta frågor sant/falskt från API, använder difficulty som parameter
+    async function getTrueOrFalseQuestions(difficulty) {
         try {
             const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=boolean`);
             const data = await response.json();
@@ -21,12 +22,34 @@
         }
     };
 
+    //Funktion för att hämta flervalsfrågor från API, använder difficulty som parameter
+    async function getMultipleChoiceQuestions(difficulty) {
+        try {
+            const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=multiple`);
+            const data = await response.json();
+            console.log(data);
+            triviaData = data.results;
+        } catch (error) {
+            console.error('Error fetching trivia', error);
+        }
+    };
+
+    function selectedQuestionType(type) {
+        questionType = type;
+    }
+
     //Börjar quizet efter vald svårighetsgrad
     function quizDifficulty(difficulty) {
         selectedDifficulty = difficulty;
         quizStarted = true;
-        fetchTriviaQuestions(difficulty);
+
+        if (questionType === 'boolean') {
+            getTrueOrFalseQuestions(difficulty)
+        } else if (questionType === 'multiple') {
+            getMultipleChoiceQuestions(difficulty);
+        }
     }
+
 
     function nextQuestion() {
         if (currentIndex < triviaData.length - 1) {
@@ -59,31 +82,49 @@
         } else if (resultScore >= 1) {
             return '<span class="text-orange-500 font-bold">Bättre lycka nästa gång!</span>';
         } else {
-            return '<span class="text-red-500 font-bold">Du fick inga rätt, fick du sitta längst fram i klassrummet ofta när du var liten?</span>';
+            return '<span class="text-red-400 font-bold">Du fick inga rätt, fick du sitta längst fram i klassrummet ofta när du var liten?</span>';
         }
     }
 
 </script>
 
 <div>
-    <h1 class="text-3xl font-bold flex justify-center mt-20 p-5">Trivia Questions</h1>
+    <h1 class="mt-20 text-2xl font-extrabold flex justify-center text-gray-900 dark:text-white md:text-2xl lg:text-4xl"><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-500 from-sky-300">Trivia Frågor:</span></h1>
     {#if !quizStarted}
-        <div class="flex flex-col items-center gap-4 mt-20">
-            <p class="text-xl font-semibold">Välj svårighetsgrad:</p>
-            <nav class="flex justify-center mt-5 space-x-5 " >
-                <Button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => quizDifficulty('easy')}>Easy</Button>
-                <Button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => quizDifficulty('medium')}>Medium</Button>
-                <Button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => quizDifficulty('hard')}>Hard</Button>
-            </nav>
-        </div>
+        {#if !questionType}
+            <div class="flex flex-col items-center gap-4 mt-20">
+                <p class="text-xl font-semibold ">Välj frågetyp</p>
+                <nav class="flex justify-center mt-5 space-x-5">
+                    <Button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => selectedQuestionType('boolean')}>Sant/Falskt</Button>
+                    <Button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => selectedQuestionType('multiple')}>Flerval</Button>
+                </nav>
+            </div>
+        {:else}
+            <div class="flex flex-col items-center gap-4 mt-20">
+                <p class="text-xl font-semibold">Välj svårighetsgrad:</p>
+                <nav class="flex justify-center mt-5 space-x-5">
+                    <Button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => quizDifficulty('easy')}>Easy</Button>
+                    <Button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => quizDifficulty('medium')}>Medium</Button>
+                    <Button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => quizDifficulty('hard')}>Hard</Button>
+                </nav>
+            </div>
+        {/if}
     {:else if quizStarted && !gameFinished}
         {#if triviaData.length > 0}
             <div class="question flex flex-col items-center gap-10 pt-20 bg-cyan-400 h-80">
                 <p class="font-medium text-center"><strong>Question:</strong> {@html triviaData[currentIndex].question}</p>
-                <div class="button-container flex justify-center mt-4 space-x-8">
-                    <Button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 text-xl rounded-full" on:click={() => submitAnswer('True')}>True</Button>
-                    <Button class="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-8 text-xl rounded-full" on:click={() => submitAnswer('False')}>False</Button>
-                </div>
+                {#if questionType === 'boolean'}
+                    <div class="button-container flex justify-center mt-4 space-x-8">
+                        <Button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 text-xl rounded-full" on:click={() => submitAnswer('True')}>True</Button>
+                        <Button class="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-8 text-xl rounded-full" on:click={() => submitAnswer('False')}>False</Button>
+                    </div>
+                {:else if questionType === 'multiple'}
+                    <div class="button-container flex justify-center mt-4 space-x-8">
+                        {#each [...triviaData[currentIndex].incorrect_answers, triviaData[currentIndex].correct_answer].sort() as answer}
+                            <Button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full" on:click={() => submitAnswer(answer)}>{answer}</Button>
+                        {/each}
+                    </div>
+                {/if}
             </div>
         {:else}
             <p class="text-center">Loading questions...</p>
