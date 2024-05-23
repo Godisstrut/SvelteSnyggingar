@@ -115,8 +115,8 @@
                 <p class="font-medium text-center"><strong>Question:</strong> {@html triviaData[currentIndex].question}</p>
                 {#if questionType === 'boolean'}
                     <div class="button-container flex justify-center mt-4 space-x-8">
-                        <Button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 text-xl rounded-full" on:click={() => submitAnswer('True')}>True</Button>
-                        <Button class="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-8 text-xl rounded-full" on:click={() => submitAnswer('False')}>False</Button>
+                        <Button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 text-xl rounded-full" on:click={() => submitAnswer('True')}>Sant</Button>
+                        <Button class="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-8 text-xl rounded-full" on:click={() => submitAnswer('False')}>Falskt</Button>
                     </div>
                 {:else if questionType === 'multiple'}
                     <div class="button-container flex justify-center mt-4 space-x-8">
