@@ -38,7 +38,7 @@
     }
 
     function submitAnswer(answer) {
-        console.log("Hejsan du klikade på mig!")
+        console.log("Hejsan du klickade på mig!")
         if (answer === triviaData[currentIndex].correct_answer) {
             score++;
         }
