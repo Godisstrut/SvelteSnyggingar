@@ -10,6 +10,29 @@
     let selectedDifficulty = '';
     let questionType = '';
 
+    function setCookie(name, value, exDays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exDays*24*60*60*1000));
+        const expires = "expires" + d.toUTCString();
+        document.cookie = name + "=" + value + "," + expires + ";path=/";
+    }
+
+    function getCookie(name) {
+        const Cname = name + "=";
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == '') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
     //Funktion för att hämta frågor sant/falskt från API, använder difficulty som parameter
     async function getTrueOrFalseQuestions(difficulty) {
         try {
@@ -50,6 +73,33 @@
         }
     }
 
+    function saveCookiesQuiz() {
+        setCookie('triviaData', JSON.stringify(triviaData), 1);
+        setCookie('currentIndex', currentIndex, 1);
+        setCookie('score', score, 1);
+        setCookie('gameFinished', gameFinished, 1);
+        setCookie('quizStarted', quizStarted, 1);
+        setCookie('selectedDifficulty', selectedDifficulty, 1);
+        setCookie('questionType', questionType, 1);
+    }
+
+    function loadCookiesQuiz() {
+        const savedTriviaData = getCookie('triviaData');
+        const savedCurrentIndex = getCookie('CurrentIndex');
+        const savedScore = getCookie('score');
+        const savedGameFinished = getCookie('gameFinished');
+        const savedQuizStarted = getCookie('quizStarted');
+        const savedSelectedDifficulty = getCookie('selectedDifficulty');
+        const savedQuestionType = getCookie('questionType');
+
+        if (savedTriviaData) triviaData = JSON.parse(savedTriviaData);
+        if (savedCurrentIndex) currentIndex = parseInt(savedCurrentIndex);
+        if (savedScore) score = parseInt(savedScore);
+        if (savedGameFinished) gameFinished = (savedGameFinished === 'true');
+        if (savedQuizStarted) quizStarted = (savedQuizStarted === 'true');
+        if (savedSelectedDifficulty) selectedDifficulty = savedSelectedDifficulty;
+        if (savedQuestionType) questionType = savedQuestionType;
+    }
 
     function nextQuestion() {
         if (currentIndex < triviaData.length - 1) {
@@ -58,6 +108,7 @@
         } else {
             gameFinished = true;
         }
+        saveCookiesQuiz();
     }
 
     function submitAnswer(answer) {
@@ -67,6 +118,7 @@
         }
         userAnswer = answer;
         nextQuestion();
+        saveCookiesQuiz();
     }
 
     //Funktion som ger ut olika svar beroende på användarens prestanda
@@ -89,7 +141,7 @@
 </script>
 
 <div>
-    <h1 class="mt-20 text-2xl font-extrabold text-center text-gray-900 dark:text-white md:text-2xl lg:text-4xl"><span class="text-transparent pb-10 bg-clip-text bg-gradient-to-r to-emerald-500 from-sky-300">TriviaSpel! Utformat för alla åldrar</span></h1>
+    <h1 class="mt-20 text-2xl font-extrabold text-center text-gray-900 dark:text-white md:text-2xl lg:text-4xl"><span class="text-transparent pb-10 bg-clip-text bg-gradient-to-r to-emerald-500 from-sky-300">Trivia! Spelet om meningslös kunskap</span></h1>
     {#if !quizStarted}
         {#if !questionType}
             <div class="flex flex-col items-center gap-4 mt-10">
