@@ -4,12 +4,15 @@
     import Navigation from "../components/Navigation.svelte";
     import Trivia from "../components/Trivia.svelte";
     import Footer from "../components/Footer.svelte";
+
+    export let data;
+    const { lyrics, artists } = data; 
 </script>
 
 <main>
     <Header />
     <Navigation />
-    <Musixmatch />
+    <Musixmatch {lyrics} {artists} />
     <Trivia />
     <Footer />
 </main>
