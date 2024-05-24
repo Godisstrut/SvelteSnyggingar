@@ -1,6 +1,6 @@
 import { MM_ROOT, MM_API_KEY } from '$env/static/private';
 
-export async function load( { fetch } ) {
+export async function load({ fetch }) {
     const artists = ['drake', 'rihanna', 'eminem', 'beyonce', 'kanye west', 'taylor swift', 'linkin park', 'backstreet boys'];
 
     const getRandomArtist = () => {
@@ -9,20 +9,19 @@ export async function load( { fetch } ) {
 
         for (let i = 0; i < 5; i++) {
             const randomIndex = Math.floor(Math.random() * artistsCopy.length);
-
-        randomArtists.push(artistsCopy.splice(randomIndex, 1)[0]);
+            randomArtists.push(artistsCopy.splice(randomIndex, 1)[0]);
         }
-        console.log("random:", randomArtists)
+        console.log("random:", randomArtists);
         return randomArtists;
     };
 
-    const artist = getRandomArtist();
+    const selectedArtists = getRandomArtist();
 
     const fetchTracks = async () => {
         try {
             const trackIdsList = [];
-            for (let i = 0; i < artist.length; i++) {
-                const res = await fetch(`${process.env.MM_ROOT}track.search?q_artist=${encodeURIComponent(artist[i])}&f_has_lyrics&page_size=3&s_track_rating=desc&apikey=${process.env.MM_API_KEY}`)
+            for (let i = 0; i < selectedArtists.length; i++) {
+                const res = await fetch(`${MM_ROOT}track.search?q_artist=${encodeURIComponent(selectedArtists[i])}&f_has_lyrics&page_size=3&s_track_rating=desc&apikey=${MM_API_KEY}`);
                 const data = await res.json();
                 const trackIds = data.message.body.track_list.map(track => track.track.track_id);
                 trackIdsList.push(trackIds);
@@ -33,19 +32,19 @@ export async function load( { fetch } ) {
             return [];
         }
     };
-    
 
     const fetchLyrics = async () => {
         try {
             const trackIdsList = await fetchTracks();
-    
+            const lyricsList = [];
+
             for (let i = 0; i < trackIdsList.length; i++) {
                 const trackIds = trackIdsList[i];
                 for (let j = 0; j < trackIds.length; j++) {
                     const trackId = trackIds[j];
-                    const resLyrics = await fetch(`${process.env.MM_ROOT}track.lyrics.get?track_id=${trackId}&apikey=${process.env.MM_API_KEY}`);
+                    const resLyrics = await fetch(`${MM_ROOT}track.lyrics.get?track_id=${trackId}&apikey=${MM_API_KEY}`);
                     const lyricsData = await resLyrics.json();
-                    
+
                     if (!lyricsData.message.body || !lyricsData.message.body.lyrics || !lyricsData.message.body.lyrics.lyrics_body || lyricsData.message.header.status_code === 404) {
                         console.log(`No lyrics found for track ID ${trackId}, checking next track.`);
                         continue;
@@ -53,19 +52,20 @@ export async function load( { fetch } ) {
                         const lyricsBody = lyricsData.message.body.lyrics.lyrics_body;
                         const paragraphs = lyricsBody.split('\n\n');
                         const firstParagraph = paragraphs[1].trim();
-                        trackIdsList[i] = [firstParagraph];
+                        lyricsList.push(firstParagraph);
                         break;
                     }
                 }
             }
-            return trackIdsList;
+            return lyricsList;
         } catch (error) {
             console.error('Error fetching lyrics', error);
             return [];
         }
     };
-return {
+
+    return {
         lyrics: await fetchLyrics(),
-        artist: artist
-}
+        artists: selectedArtists
+    };
 }

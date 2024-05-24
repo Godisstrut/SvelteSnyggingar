@@ -3,21 +3,21 @@
   export let artists = [];
 
   let guess = "";
-  let currentIndex = 0; // Initialize the current index
+  let currentIndex = 0; 
 
   const compareGuess = () => {
-      console.log('Button clicked'); // Debug log to check if the function is triggered
+      console.log('Button clicked'); 
       const currentArtist = artists[currentIndex].trim().toLowerCase();
       if (guess.trim().toLowerCase() === currentArtist) {
           alert('Rätt');
       } else {
           alert('Fel');
       }
-      guess = ""; // Clear the input field
-      currentIndex++; // Move to the next lyric
+      guess = ""; 
+      currentIndex++; 
 
       if (currentIndex >= lyrics.length) {
-          currentIndex = 0; // Restart from the beginning if at the end
+          currentIndex = 0; 
           alert('You have finished all the lyrics!');
       }
   };
