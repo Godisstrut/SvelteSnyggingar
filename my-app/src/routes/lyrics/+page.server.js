@@ -52,7 +52,8 @@ export async function load({ fetch }) {
                         const lyricsBody = lyricsData.message.body.lyrics.lyrics_body;
                         const paragraphs = lyricsBody.split('\n\n');
                         const firstParagraph = paragraphs[1].trim();
-                        lyricsList.push(firstParagraph);
+                        const lines = firstParagraph.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                        lyricsList.push(lines);
                         break;
                     }
                 }

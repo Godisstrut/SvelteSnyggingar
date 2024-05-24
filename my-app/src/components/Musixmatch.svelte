@@ -30,7 +30,11 @@
 
 <div class="flex justify-center" >
   {#if lyrics.length > 0}
-    <p class=" max-w-xl text-center text-lg font-semibold m-20 ">{lyrics[currentIndex]}</p>
+    <div class="max-w-xl text-lg font-semibold m-20">
+      {#each lyrics[currentIndex] as line}
+        <p>{line}</p>
+      {/each}
+    </div>
   {/if}
 </div>
 <div class="flex justify-center space-x-2 " >
