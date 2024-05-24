@@ -1,18 +1,30 @@
-<!-- <script context="module">
+<script>
+  export let lyrics = [];
+  export let artists = [];
 
-    async function load({ fetch, params }) {
-      const track = 'Baby';
-      const artist = 'Justin Bieber';
-      const response = await fetch(`https://api.musixmatch.com/ws/1.1/track.get?apikey=${PUBLIC_LYRICS_APIKEY}commontrack_id=5920049`);
+  let guess = "";
+  let currentIndex = 0; // Initialize the current index
 
-      const data = await response.json();
-      console.log(data)
-      return { props: { lyrics: data.lyrics_body || 'Lyrics not found' } };
-    }
-    export let lyrics;
-  </script>
-  
-  <main>
-    <h1>Lyrics</h1>
-    <p>{lyrics}</p>
-  </main> -->
+  const compareGuess = () => {
+      console.log('Button clicked'); // Debug log to check if the function is triggered
+      const currentArtist = artists[currentIndex].trim().toLowerCase();
+      if (guess.trim().toLowerCase() === currentArtist) {
+          alert('Rätt');
+      } else {
+          alert('Fel');
+      }
+      guess = ""; // Clear the input field
+      currentIndex++; // Move to the next lyric
+
+      if (currentIndex >= lyrics.length) {
+          currentIndex = 0; // Restart from the beginning if at the end
+          alert('You have finished all the lyrics!');
+      }
+  };
+</script>
+
+{#if lyrics.length > 0}
+  <p>{lyrics[currentIndex]}</p>
+{/if}
+<input type="text" placeholder="Skriv artist" bind:value={guess} />
+<button on:click={compareGuess}>Skicka</button>
