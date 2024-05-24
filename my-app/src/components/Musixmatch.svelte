@@ -1,24 +1,29 @@
 <script>
+  import Button from "./Button.svelte";
   export let lyrics = [];
   export let artists = [];
 
   let guess = "";
   let currentIndex = 0; 
+  let answers = [];
 
   const compareGuess = () => {
-      console.log('Button clicked'); 
       const currentArtist = artists[currentIndex];
       if (guess.trim().toLowerCase() === currentArtist) {
           alert('Rätt');
       } else {
-          alert('Fel');
+        alert('Fel');
       }
+      
+      answers.push({ guess, answer: currentArtist });
+      
       guess = ""; 
       currentIndex++; 
 
       if (currentIndex >= lyrics.length) {
           currentIndex = 0; 
-          alert('You have finished all the lyrics!');
+          alert('You have finished all the lyrics');
+          console.log(answers);
       }
   };
 </script>
@@ -27,4 +32,4 @@
   <p>{lyrics[currentIndex]}</p>
 {/if}
 <input type="text" placeholder="Skriv artist" bind:value={guess} />
-<button on:click={compareGuess}>Skicka</button>
+<Button on:click={compareGuess} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">Skicka</Button>
