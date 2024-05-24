@@ -8,8 +8,8 @@
     </header>
 
     <nav class="flex justify-center mt-5 pt-10 gap-20" >
-        <Button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded"><a data-sveltekit-preload-data="hover" href="/lyrics">LyricsGuessr</a></Button>
-        <Button class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-8 rounded"><a data-sveltekit-preload-data="hover" href="/trivia">TriviaGuessr</a></Button>
+        <a href="/lyrics" data-sveltekit-preload-data="hover" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded">LyricsGuessr</a>
+        <a href="/trivia" data-sveltekit-preload-data="hover" class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-8 rounded">TriviaGuessr</a>
     </nav>
 
 <slot />
