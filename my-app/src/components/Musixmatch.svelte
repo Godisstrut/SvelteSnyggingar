@@ -28,8 +28,12 @@
   };
 </script>
 
-{#if lyrics.length > 0}
-  <p>{lyrics[currentIndex]}</p>
-{/if}
-<input type="text" placeholder="Skriv artist" bind:value={guess} />
-<Button on:click={compareGuess} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">Skicka</Button>
+<div class="flex justify-center" >
+  {#if lyrics.length > 0}
+    <p class=" max-w-xl text-center text-lg font-semibold m-20 ">{lyrics[currentIndex]}</p>
+  {/if}
+</div>
+<div class="flex justify-center space-x-2 " >
+  <input class="border 2 border-slate-700 rounded-lg py-2 px-4" type="text" placeholder="Skriv artist" bind:value={guess} />
+  <Button on:click={compareGuess} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">Skicka</Button>
+</div>
