@@ -1,6 +1,16 @@
 <script>
     import Button from './Button.svelte';
 
+    function resetCookiesQuiz() {
+        eraseCookie('triviaData');
+        eraseCookie('currentIndex');
+        eraseCookie('score');
+        eraseCookie('gameFinished');
+        eraseCookie('quizStarted');
+        eraseCookie('selectedDifficulty');
+        eraseCookie('questionType');
+    }
+
     let triviaData = [];
     let currentIndex = 0;
     let userAnswer = '';
@@ -33,6 +43,10 @@
         return "";
     }
 
+    function eraseCookie(name) {
+        document.cookie = name + '=; Max-Age= -999999';
+    }
+
     //Funktion för att hämta frågor sant/falskt från API, använder difficulty som parameter
     async function getTrueOrFalseQuestions(difficulty) {
         try {
@@ -59,6 +73,7 @@
 
     function selectedQuestionType(type) {
         questionType = type;
+        saveCookiesQuiz();
     }
 
     //Börjar quizet efter vald svårighetsgrad
