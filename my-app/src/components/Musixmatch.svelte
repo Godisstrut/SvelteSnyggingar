@@ -7,7 +7,7 @@
 
   const compareGuess = () => {
       console.log('Button clicked'); 
-      const currentArtist = artists[currentIndex].trim().toLowerCase();
+      const currentArtist = artists[currentIndex];
       if (guess.trim().toLowerCase() === currentArtist) {
           alert('Rätt');
       } else {
