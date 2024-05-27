@@ -1,7 +1,9 @@
 import { MM_ROOT, MM_API_KEY } from '$env/static/private';
 
 export async function load({ fetch }) {
-    const artists = ['drake', 'rihanna', 'eminem', 'beyonce', 'kanye west', 'taylor swift', 'linkin park', 'backstreet boys'];
+    const artists = ['drake', 'rihanna', 'eminem', 'beyonce', 'kanye west', 
+    'taylor swift', 'linkin park', 'backstreet boys', 'post malone', 'billie eilish',
+    'kendrick lamar', 'zara larsson', 'ariana grande', 'harry styles', 'ed sheeran', 'sia',];
 
     const getRandomArtist = () => {
         const artistsCopy = [...artists];
