@@ -1,4 +1,5 @@
 <script>
+  import { goto } from '$app/navigation';
   import Button from "./Button.svelte";
   export let lyrics = [];
   export let artists = [];
@@ -21,7 +22,7 @@
       currentIndex++; 
 
       if (currentIndex >= lyrics.length) {
-          currentIndex = 0; 
+          currentIndex++;
           alert('You have finished all the lyrics');
           console.log(answers);
       }

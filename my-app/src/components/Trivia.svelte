@@ -1,6 +1,6 @@
 <script>
     import Button from './Button.svelte';
-
+    import { goto } from '$app/navigation';
     let triviaData = [];
     let currentIndex = 0;
     let userAnswer = '';
@@ -133,6 +133,7 @@
         <div class="flex flex-col items-center gap-10 pt-20 bg-cyan-400 h-80">
             <p class="text-xl font-semibold mt-10">Ditt resultat är {score} ut av {triviaData.length}</p>
             <p class="font-normal mt-5 text-center">{@html resultMessage(score, triviaData.length)}</p>
+            <Button><a class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-full" href="/"> Home </Button>
         </div>
     {/if}
 </div>
