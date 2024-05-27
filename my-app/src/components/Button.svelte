@@ -4,6 +4,6 @@
     }
 </script>
 
-<button {...buttonProps}>
+<button {...buttonProps} on:click>
     <slot />
 </button>
