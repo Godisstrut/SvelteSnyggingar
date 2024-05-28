@@ -15,7 +15,6 @@
         try {
             const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=boolean`);
             const data = await response.json();
-            console.log(data);
             triviaData = data.results;
         } catch (error) {
             console.error('Error fetching trivia:', error);
@@ -27,7 +26,6 @@
         try {
             const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=multiple`);
             const data = await response.json();
-            console.log(data);
             triviaData = data.results;
         } catch (error) {
             console.error('Error fetching trivia', error);
@@ -61,7 +59,6 @@
     }
 
     function submitAnswer(answer) {
-        console.log("Hejsan du klickade på mig!")
         if (answer === triviaData[currentIndex].correct_answer) {
             score++;
         }
