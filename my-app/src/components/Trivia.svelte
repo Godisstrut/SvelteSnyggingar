@@ -1,13 +1,11 @@
 <script>
     import Button from './Button.svelte';
-    import { goto } from '$app/navigation';
     let triviaData = [];
     let currentIndex = 0;
     let userAnswer = '';
     let score = 0;
     let gameFinished = false;
     let quizStarted = false;
-    let selectedDifficulty = '';
     let questionType = '';
 
     //Funktion för att hämta frågor sant/falskt från API, använder difficulty som parameter
@@ -16,6 +14,7 @@
             const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=boolean`);
             const data = await response.json();
             triviaData = data.results;
+            console.log(triviaData);
         } catch (error) {
             console.error('Error fetching trivia:', error);
         }
@@ -38,7 +37,6 @@
 
     //Börjar quizet efter vald svårighetsgrad
     function quizDifficulty(difficulty) {
-        selectedDifficulty = difficulty;
         quizStarted = true;
 
         if (questionType === 'boolean') {

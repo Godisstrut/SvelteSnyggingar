@@ -17,6 +17,7 @@
     guess = "";
     currentIndex++;
     if (currentIndex >= lyrics.length) {
+      // skicka iväg answers till +page.svelte så att man kan se sina resultat
       show = true;
     }
   };
