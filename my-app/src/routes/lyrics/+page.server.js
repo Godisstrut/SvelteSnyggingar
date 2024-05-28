@@ -22,6 +22,7 @@ export async function load({ fetch }) {
     const fetchTracks = async () => {
         try {
             const trackIdsList = [];
+            
             for (let i = 0; i < selectedArtists.length; i++) {
                 const res = await fetch(`${MM_ROOT}track.search?q_artist=${encodeURIComponent(selectedArtists[i])}&f_has_lyrics&page_size=3&s_track_rating=desc&apikey=${MM_API_KEY}`);
                 const data = await res.json();
@@ -34,10 +35,26 @@ export async function load({ fetch }) {
             return [];
         }
     };
+    
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
 
+      function randomizeNestedList(nestedList) {
+        for (let i = 0; i < nestedList.length; i++) {
+          nestedList[i] = shuffleArray(nestedList[i]);
+        }
+        return nestedList;
+      }
     const fetchLyrics = async () => {
         try {
             const trackIdsList = await fetchTracks();
+            shuffleArray(trackIdsList)
+            randomizeNestedList(trackIdsList)
             const lyricsList = [];
 
             for (let i = 0; i < trackIdsList.length; i++) {
