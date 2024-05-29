@@ -1,16 +1,17 @@
 <script>
     import Button from './Button.svelte';
-    import { goto } from '$app/navigation';
+    import { triviaGameIds } from '../stores.js';
+    import { get } from 'svelte/store';
+
     let triviaData = [];
     let currentIndex = 0;
     let userAnswer = '';
     let score = 0;
     let gameFinished = false;
     let quizStarted = false;
-    let selectedDifficulty = '';
     let questionType = '';
+    let answers = [];
 
-    //Funktion för att hämta frågor sant/falskt från API, använder difficulty som parameter
     async function getTrueOrFalseQuestions(difficulty) {
         try {
             const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=boolean`);
@@ -19,9 +20,8 @@
         } catch (error) {
             console.error('Error fetching trivia:', error);
         }
-    };
+    }
 
-    //Funktion för att hämta flervalsfrågor från API, använder difficulty som parameter
     async function getMultipleChoiceQuestions(difficulty) {
         try {
             const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=multiple`);
@@ -30,15 +30,13 @@
         } catch (error) {
             console.error('Error fetching trivia', error);
         }
-    };
+    }
 
     function selectedQuestionType(type) {
         questionType = type;
     }
 
-    //Börjar quizet efter vald svårighetsgrad
     function quizDifficulty(difficulty) {
-        selectedDifficulty = difficulty;
         quizStarted = true;
 
         if (questionType === 'boolean') {
@@ -48,13 +46,16 @@
         }
     }
 
-
     function nextQuestion() {
         if (currentIndex < triviaData.length - 1) {
             currentIndex++;
             userAnswer = '';
         } else {
             gameFinished = true;
+            const storedGameIds = get(triviaGameIds);
+            const newGameIds = [...storedGameIds, answers];
+            localStorage.setItem("triviaGameIds", JSON.stringify(newGameIds));
+            triviaGameIds.set(newGameIds);
         }
     }
 
@@ -62,11 +63,16 @@
         if (answer === triviaData[currentIndex].correct_answer) {
             score++;
         }
+        answers.push({
+            question: triviaData[currentIndex].question,
+            answer: answer,
+            correctAnswer: triviaData[currentIndex].correct_answer
+        });
+
         userAnswer = answer;
         nextQuestion();
     }
 
-    //Funktion som ger ut olika svar beroende på användarens prestanda
     function resultMessage(score, total) {
         const resultScore = (score / total) * 10;
 
@@ -75,18 +81,17 @@
         } else if (resultScore >= 7) {
             return '<span class="text-xl text-sky-700 font-bold">Grymt jobbat! Nästan alla rätt</span>';
         } else if (resultScore >= 5) {
-            return '<span class="text-xl text-yellow-500 font-bold">Bra jobbat!</span>';
+            return '<span class="text-xl text-green-600 font-bold">Bra jobbat!</span>';
         } else if (resultScore >= 1) {
             return '<span class="text-xl text-red-700 font-bold">Bättre lycka nästa gång!</span>';
         } else {
             return '<span class="text-xl text-red-950 font-bold">Du fick inga rätt, fick du sitta längst fram i klassrummet ofta när du var liten?</span>';
         }
     }
-
 </script>
 
 <div>
-    <h1 class="mt-20 text-2xl font-extrabold text-center text-gray-900 dark:text-white md:text-2xl lg:text-4xl"><span class="text-transparent pb-10 bg-clip-text bg-gradient-to-r to-emerald-500 from-sky-300">TriviaSpel! Utformat för alla åldrar</span></h1>
+    <h1 class="mt-20 text-2xl font-extrabold text-center text-gray-900 dark:text-white md:text-2xl lg:text-4xl"><span class="text-transparent pb-10 bg-clip-text bg-gradient-to-r to-emerald-500 from-sky-300">Trivia! Spelet om meningslös kunskap</span></h1>
     {#if !quizStarted}
         {#if !questionType}
             <div class="flex flex-col items-center gap-4 mt-10">
@@ -127,9 +132,22 @@
             <p class="text-center">Loading questions...</p>
         {/if}
     {:else}
-        <div class="flex flex-col items-center gap-10 pt-20 bg-cyan-400 h-80">
-            <p class="text-xl font-semibold mt-10">Ditt resultat är {score} ut av {triviaData.length}</p>
+        <div class="flex flex-col items-center gap-10 pt-20 bg-cyan-300 h-80">
+            <p class="text-xl font-semibold mt-10">Ditt resultat är {score}/{triviaData.length}</p>
             <p class="font-normal mt-5 text-center">{@html resultMessage(score, triviaData.length)}</p>
+            <div class="mt-5">  
+                <h2 class="text-lg font-bold flex justify-center">Dina svar:</h2>
+                <ul class="grid grid-cols-2 lg:grid-cols-5 p-5 ">
+                    {#each answers as userAnswer}
+                        <li class="mt-2 place-content-center">
+                            <p class="font-semibold">Fråga:</p>
+                            <p class="mb-2">{@html userAnswer.question}</p> 
+                            <p class="font-semibold">Ditt svar:{@html userAnswer.answer}</p> 
+                            <p class="font-semibold">Korrekt svar:{@html userAnswer.correctAnswer}</p> 
+                        </li>
+                    {/each}
+                </ul>
+            </div>
             <Button><a class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-full" href="/"> Home </Button>
         </div>
     {/if}

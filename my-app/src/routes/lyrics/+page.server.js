@@ -22,6 +22,7 @@ export async function load({ fetch }) {
     const fetchTracks = async () => {
         try {
             const trackIdsList = [];
+            
             for (let i = 0; i < selectedArtists.length; i++) {
                 const res = await fetch(`${MM_ROOT}track.search?q_artist=${encodeURIComponent(selectedArtists[i])}&f_has_lyrics&page_size=3&s_track_rating=desc&apikey=${MM_API_KEY}`);
                 const data = await res.json();
@@ -31,13 +32,25 @@ export async function load({ fetch }) {
             return trackIdsList;
         } catch (error) {
             console.log('Error fetching', error);
-            return [];
+            return []; 
         }
     };
+    
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
 
+      function randomizeNestedList(nestedList) {
+        return nestedList.map(sublist => shuffleArray([...sublist]));
+    }
     const fetchLyrics = async () => {
         try {
             const trackIdsList = await fetchTracks();
+            randomizeNestedList(trackIdsList)
             const lyricsList = [];
 
             for (let i = 0; i < trackIdsList.length; i++) {
@@ -48,7 +61,7 @@ export async function load({ fetch }) {
                     const lyricsData = await resLyrics.json();
 
                     if (!lyricsData.message.body || !lyricsData.message.body.lyrics || !lyricsData.message.body.lyrics.lyrics_body || lyricsData.message.header.status_code === 404) {
-                        console.log(`No lyrics found for track ID ${trackId}, checking next track.`);
+                        console.log(`Hittade inga lyrics för låtID: ${trackId}, kollar nästa.`);
                         continue;
                     } else {
                         const lyricsBody = lyricsData.message.body.lyrics.lyrics_body;
