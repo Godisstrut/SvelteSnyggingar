@@ -1,3 +1,4 @@
 import { writable } from 'svelte/store';
 
-export const gameIds = writable([])
+export const lyricGameIds = writable([])
+export const triviaGameIds = writable([])

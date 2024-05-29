@@ -1,5 +1,8 @@
 <script>
     import Button from './Button.svelte';
+    import { triviaGameIds } from '../stores.js';
+    import { get } from 'svelte/store';
+
     let triviaData = [];
     let currentIndex = 0;
     let userAnswer = '';
@@ -9,19 +12,16 @@
     let questionType = '';
     let answers = [];
 
-    //Funktion för att hämta frågor sant/falskt från API, använder difficulty som parameter
     async function getTrueOrFalseQuestions(difficulty) {
         try {
             const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=boolean`);
             const data = await response.json();
             triviaData = data.results;
-            console.log(triviaData);
         } catch (error) {
             console.error('Error fetching trivia:', error);
         }
-    };
+    }
 
-    //Funktion för att hämta flervalsfrågor från API, använder difficulty som parameter
     async function getMultipleChoiceQuestions(difficulty) {
         try {
             const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=multiple`);
@@ -30,13 +30,12 @@
         } catch (error) {
             console.error('Error fetching trivia', error);
         }
-    };
+    }
 
     function selectedQuestionType(type) {
         questionType = type;
     }
 
-    //Börjar quizet efter vald svårighetsgrad
     function quizDifficulty(difficulty) {
         quizStarted = true;
 
@@ -47,13 +46,16 @@
         }
     }
 
-
     function nextQuestion() {
         if (currentIndex < triviaData.length - 1) {
             currentIndex++;
             userAnswer = '';
         } else {
             gameFinished = true;
+            const storedGameIds = get(triviaGameIds);
+            const newGameIds = [...storedGameIds, answers];
+            localStorage.setItem("triviaGameIds", JSON.stringify(newGameIds));
+            triviaGameIds.set(newGameIds);
         }
     }
 
@@ -65,13 +67,12 @@
             question: triviaData[currentIndex].question,
             answer: answer,
             correctAnswer: triviaData[currentIndex].correct_answer
-        })
+        });
 
         userAnswer = answer;
         nextQuestion();
     }
 
-    //Funktion som ger ut olika svar beroende på användarens prestanda
     function resultMessage(score, total) {
         const resultScore = (score / total) * 10;
 
@@ -87,7 +88,6 @@
             return '<span class="text-xl text-red-950 font-bold">Du fick inga rätt, fick du sitta längst fram i klassrummet ofta när du var liten?</span>';
         }
     }
-
 </script>
 
 <div>

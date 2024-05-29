@@ -1,7 +1,7 @@
 <script>
   import { goto } from "$app/navigation";
   import Button from "./Button.svelte";
-  import { gameIds } from "../stores.js";
+  import { lyricGameIds } from "../stores.js";
   import { get } from "svelte/store";
 
   export let lyrics = [];
@@ -21,10 +21,10 @@
     currentIndex++;
     if (currentIndex >= lyrics.length) {
       show = true;
-      const storedGameIds = get(gameIds);
+      const storedGameIds = get(lyricGameIds);
       const newGameIds = [...storedGameIds, answers];
-      localStorage.setItem("gameIds", JSON.stringify(newGameIds));
-      gameIds.set(newGameIds);
+      localStorage.setItem("lyricGameIds", JSON.stringify(newGameIds));
+      lyricGameIds.set(newGameIds);
     }
   };
 
