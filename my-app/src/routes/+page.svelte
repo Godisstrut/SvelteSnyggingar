@@ -1,26 +1,28 @@
 <script>
-  import { onMount } from 'svelte';
-  import { createAnswersStore } from '../answersStores.js';
-  let gameId = 'musixmatch'; // or some other unique identifier for the game
-  const answers = createAnswersStore(gameId);
-  let storedAnswers = [];
+    import { gameIds } from '../stores.js';
+    import { onMount } from 'svelte';
 
-  onMount(() => {
-    const unsubscribe = answers.subscribe(value => {
-      storedAnswers = value;
-    });
+    onMount(() => {
+        const storedGameIds = JSON.parse(localStorage?.getItem('gameIds') || '[]');
+        gameIds.set(storedGameIds);
+    } )
 
-    return () => unsubscribe();
-  });
+    function updateStorage() {
+        gameIds.update(ids => {
+            const newId = ids.length + 1;
+            const newIds = [...ids, newId];
+            localStorage?.setItem('gameIds', JSON.stringify(newIds));
+            return newIds;
+        });
+    }
 </script>
 
 <div class="flex flex-col items-center mt-4">
-  <h1 class="text-xl font-bold mb-4">Results from Musixmatch</h1>
-  <ul class="flex flex-col space-y-2">
-    {#each storedAnswers as { guess, answer, isCorrect }}
-      <li class="{ isCorrect ? 'bg-green-200' : 'bg-red-200' } border border-gray-300 p-2 rounded shadow">
-        <strong>{isCorrect ? 'Guessed' : 'Wrong guess'}:</strong> {guess}, <strong>Correct:</strong> {answer}
-      </li>
-    {/each}
-  </ul>
+    <h1 class="text-xl font-bold mb-4">Results from Musixmatch</h1>
+    <button on:click={updateStorage}>Add Game ID</button>
+    <ul>
+        {#each $gameIds as gameId}
+            <li>{gameId}</li>
+        {/each}
+    </ul>
 </div>
