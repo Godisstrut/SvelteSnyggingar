@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { createAnswersStore } from '../answersStores.js';
-  let gameId = 'musixmatch'; // or some other unique identifier for the game
+  let gameId = 'musixmatch'; 
   const answers = createAnswersStore(gameId);
   let storedAnswers = [];
 
