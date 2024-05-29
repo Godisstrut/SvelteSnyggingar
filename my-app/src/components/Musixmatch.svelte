@@ -40,7 +40,7 @@
         <p>{line}</p>
       {/each}
     {:else}
-      <h1>You have finished all the lyrics!</h1>
+      <h1>Du har svarat på alla lyrics!</h1>
     {/if}
   </div>
 </div>

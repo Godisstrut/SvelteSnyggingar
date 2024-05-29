@@ -61,7 +61,7 @@ export async function load({ fetch }) {
                     const lyricsData = await resLyrics.json();
 
                     if (!lyricsData.message.body || !lyricsData.message.body.lyrics || !lyricsData.message.body.lyrics.lyrics_body || lyricsData.message.header.status_code === 404) {
-                        console.log(`No lyrics found for track ID ${trackId}, checking next track.`);
+                        console.log(`Hittade inga lyrics för låtID: ${trackId}, kollar nästa.`);
                         continue;
                     } else {
                         const lyricsBody = lyricsData.message.body.lyrics.lyrics_body;
