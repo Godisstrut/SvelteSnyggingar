@@ -32,7 +32,7 @@ export async function load({ fetch }) {
             return trackIdsList;
         } catch (error) {
             console.log('Error fetching', error);
-            return [];
+            return []; 
         }
     };
     
@@ -45,15 +45,11 @@ export async function load({ fetch }) {
       }
 
       function randomizeNestedList(nestedList) {
-        for (let i = 0; i < nestedList.length; i++) {
-          nestedList[i] = shuffleArray(nestedList[i]);
-        }
-        return nestedList;
-      }
+        return nestedList.map(sublist => shuffleArray([...sublist]));
+    }
     const fetchLyrics = async () => {
         try {
             const trackIdsList = await fetchTracks();
-            shuffleArray(trackIdsList)
             randomizeNestedList(trackIdsList)
             const lyricsList = [];
 

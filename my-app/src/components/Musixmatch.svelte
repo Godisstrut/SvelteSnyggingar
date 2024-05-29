@@ -1,24 +1,29 @@
 <script>
   import { goto } from '$app/navigation';
   import Button from "./Button.svelte";
+  import { createAnswersStore } from '../answersStores.js';
 
   export let lyrics = [];
   export let artists = [];
+  export let gameId = 'musixmatch'; // or some other unique identifier for the game
+
+  const answers = createAnswersStore(gameId);
 
   let guess = "";
   let currentIndex = 0;
-  let answers = [];
+  let localAnswers = [];
   let show = false;
 
   const compareGuess = () => {
     const currentArtist = artists[currentIndex];
     const isCorrect = guess.trim().toLowerCase() === currentArtist.toLowerCase();
-    answers = [...answers, { guess, answer: currentArtist, isCorrect }];
+    localAnswers = [...localAnswers, { guess, answer: currentArtist, isCorrect }];
+    answers.set(localAnswers);
     guess = "";
     currentIndex++;
     if (currentIndex >= lyrics.length) {
-      // skicka iväg answers till +page.svelte så att man kan se sina resultat
       show = true;
+      console.log(localAnswers);
     }
   };
 
@@ -64,11 +69,10 @@
 <div class="flex flex-col items-center mt-4">
   <h1 class="text-xl font-bold mb-4">Results</h1>
   <ul class="flex flex-col space-y-2">
-    {#each answers as { guess, answer, isCorrect }}
+    {#each localAnswers as { guess, answer, isCorrect }}
       <li class="{ isCorrect ? 'bg-green-200' : 'bg-red-200' } border border-gray-300 p-2 rounded shadow">
         <strong>{isCorrect ? 'Guessed' : 'Wrong guess'}:</strong> {guess}, <strong>Correct:</strong> {answer}
       </li>
     {/each}
   </ul>
 </div>
-
