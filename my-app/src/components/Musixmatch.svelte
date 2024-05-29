@@ -1,34 +1,35 @@
 <script>
-  import { goto } from '$app/navigation';
+  import { goto } from "$app/navigation";
   import Button from "./Button.svelte";
-  import { createAnswersStore } from '../answersStores.js';
+  import { gameIds } from "../stores.js";
+  import { get } from "svelte/store";
 
   export let lyrics = [];
   export let artists = [];
-  export let gameId = 'musixmatch'; // or some other unique identifier for the game
-
-  const answers = createAnswersStore(gameId);
 
   let guess = "";
   let currentIndex = 0;
-  let localAnswers = [];
+  let answers = [];
   let show = false;
 
   const compareGuess = () => {
     const currentArtist = artists[currentIndex];
-    const isCorrect = guess.trim().toLowerCase() === currentArtist.toLowerCase();
-    localAnswers = [...localAnswers, { guess, answer: currentArtist, isCorrect }];
-    answers.set(localAnswers);
+    const isCorrect =
+      guess.trim().toLowerCase() === currentArtist.toLowerCase();
+    answers = [...answers, { guess, answer: currentArtist, isCorrect }];
     guess = "";
     currentIndex++;
     if (currentIndex >= lyrics.length) {
       show = true;
-      console.log(localAnswers);
+      const storedGameIds = get(gameIds);
+      const newGameIds = [...storedGameIds, answers];
+      localStorage.setItem("gameIds", JSON.stringify(newGameIds));
+      gameIds.set(newGameIds);
     }
   };
 
   const goHome = () => {
-    goto('/');
+    goto("/");
   };
 </script>
 
@@ -52,7 +53,10 @@
       placeholder="Skriv artist"
       bind:value={guess}
     />
-    <Button on:click={compareGuess} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+    <Button
+      on:click={compareGuess}
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
+    >
       Skicka
     </Button>
   </div>
@@ -60,7 +64,10 @@
 
 <div class="flex justify-center mt-4">
   {#if show}
-    <button on:click={goHome} class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded">
+    <button
+      on:click={goHome}
+      class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded"
+    >
       Home
     </button>
   {/if}
@@ -69,9 +76,15 @@
 <div class="flex flex-col items-center mt-4">
   <h1 class="text-xl font-bold mb-4">Results</h1>
   <ul class="flex flex-col space-y-2">
-    {#each localAnswers as { guess, answer, isCorrect }}
-      <li class="{ isCorrect ? 'bg-green-200' : 'bg-red-200' } border border-gray-300 p-2 rounded shadow">
-        <strong>{isCorrect ? 'Guessed' : 'Wrong guess'}:</strong> {guess}, <strong>Correct:</strong> {answer}
+    {#each answers as { guess, answer, isCorrect }}
+      <li
+        class="{isCorrect
+          ? 'bg-green-200'
+          : 'bg-red-200'} border border-gray-300 p-2 rounded shadow"
+      >
+        <strong>{isCorrect ? "Guessed" : "Wrong guess"}:</strong>
+        {guess}, <strong>Correct:</strong>
+        {answer}
       </li>
     {/each}
   </ul>
