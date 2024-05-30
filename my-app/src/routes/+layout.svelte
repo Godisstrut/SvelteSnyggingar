@@ -1,6 +1,5 @@
 <script>
     import "../app.css";
-    import Button from "../components/Button.svelte";
 </script>
 <main> 
     <header data-sveltekit-reload>

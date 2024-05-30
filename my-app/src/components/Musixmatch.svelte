@@ -1,17 +1,21 @@
 <script>
+  // importerar componenter och funktioner för att componenten ska funkgera
   import { goto } from "$app/navigation";
   import Button from "./Button.svelte";
   import { lyricGameIds } from "../stores.js";
   import { get } from "svelte/store";
 
+  
   export let lyrics = [];
   export let artists = [];
 
+  // definerar variabler som tar in användaren gissning, vilken låt som ska visas i taget, sparar användarens gissnig och det rätta svaret och en boolean för när man är klart med spelet 
   let guess = "";
   let currentIndex = 0;
   let answers = [];
   let show = false;
 
+  // funktion som kollra om man har rätt eller fel, gör även en localstorage 
   const compareGuess = () => {
     const currentArtist = artists[currentIndex];
     const isCorrect =
@@ -28,11 +32,13 @@
     }
   };
 
+  // skickar hem spelaren efter spelet 
   const goHome = () => {
     goto("/");
   };
 </script>
 
+<!-- Resten av koden är utseende -->
 <div class="flex justify-center">
   <div class="max-w-xl text-lg font-semibold m-20">
     {#if currentIndex < lyrics.length}

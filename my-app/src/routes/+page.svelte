@@ -1,10 +1,12 @@
 <script>
+    // tar in data från de olika spelen 
     import { lyricGameIds, triviaGameIds } from "../stores.js";
     import { onMount } from "svelte";
 
     let lyricStoredAnswers = [];
     let triviaStoredAnswers = [];   
 
+    // en funktion som gör localstorage av de olika spelen på första sidan 
     onMount(() => {
         const storedLyricGameIds = JSON.parse(localStorage?.getItem("lyricGameIds") || "[]");
         lyricStoredAnswers = storedLyricGameIds;
@@ -16,6 +18,7 @@
     });
 </script>
 
+<!-- Dessa olika div:sen visar upp datan i olika tabeller på första sidan -->
 <div class="flex flex-row justify-center mt-4 space-x-8">
   <div class="flex flex-col items-center w-full max-w-md">
       <h1 class="text-xl font-bold mb-4">LyricsGuessr:</h1>
