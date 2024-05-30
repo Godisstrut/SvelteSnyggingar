@@ -6,7 +6,7 @@ export async function load({ fetch }) {
     // Lista mer artister, Det går att fylla på med fler 
     const artists = ['drake', 'rihanna', 'eminem', 'beyonce', 'kanye west', 
     'taylor swift', 'linkin park', 'backstreet boys', 'post malone', 'billie eilish',
-    'kendrick lamar', 'zara larsson', 'ariana grande', 'harry styles', 'ed sheeran', 'sia',];
+    'kendrick lamar', 'zara larsson', 'ariana grande', 'harry styles', 'ed sheeran', 'sia'];
 
     // Funktion som hämtar 5 random arister i listan ovanför och returnar dem
     const getRandomArtist = () => {
