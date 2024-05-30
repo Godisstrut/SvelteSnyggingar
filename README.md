@@ -11,9 +11,9 @@ Svelte is the overall more lightweight and simpler framework to use in a small p
 
 1. Clone the repository link: https://github.com/Godisstrut/SvelteSnyggingar.git
 
-2. Install dependencies: npm install 
+2. Navigate to the correct folder: Sveltesnyggingar/my-app You can do this by typing cd my-app
 
-3. Navigate to the correct folder: Sveltesnyggingar/my-app You can do this by typing cd my-app
+3. Install dependencies: npm install
 
 4. Run the program with the development server: npm run dev
 
