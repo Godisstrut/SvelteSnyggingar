@@ -135,19 +135,6 @@
         <div class="flex flex-col items-center gap-10 pt-20 bg-cyan-300 h-80">
             <p class="text-xl font-semibold mt-10">Ditt resultat är {score}/{triviaData.length}</p>
             <p class="font-normal mt-5 text-center">{@html resultMessage(score, triviaData.length)}</p>
-            <div class="mt-5">  
-                <h2 class="text-lg font-bold flex justify-center">Dina svar:</h2>
-                <ul class="grid grid-cols-2 lg:grid-cols-5 p-5 ">
-                    {#each answers as userAnswer}
-                        <li class="mt-2 place-content-center">
-                            <p class="font-semibold">Fråga:</p>
-                            <p class="mb-2">{@html userAnswer.question}</p> 
-                            <p class="font-semibold">Ditt svar:{@html userAnswer.answer}</p> 
-                            <p class="font-semibold">Korrekt svar:{@html userAnswer.correctAnswer}</p> 
-                        </li>
-                    {/each}
-                </ul>
-            </div>
             <Button><a class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-full" href="/"> Home </Button>
         </div>
     {/if}
