@@ -16,7 +16,7 @@
     });
 </script>
 
-<div class="flex flex-col mb-5 justify-center mt-5 items-center">
+<div class="flex max-md:flex-col flex-row mb-5 justify-center mt-5 max-md:items-center gap-5">
   <div class="flex flex-col items-center w-full max-w-md">
       <h1 class="text-xl font-bold mb-4">LyricsGuessr:</h1>
       <ul class="flex flex-col space-y-2 w-full">
@@ -35,7 +35,7 @@
       </ul>
   </div>
 
-  <div class="flex flex-col items-center w-full max-w-md mt-5">
+  <div class="flex flex-col items-center w-full max-w-md max-md:mt-5 mb-5">
       <h1 class="text-xl font-bold mb-4">TriviaGuessr:</h1>
       <ul class="flex flex-col space-y-2 w-full">
           {#each triviaStoredAnswers as answers}
