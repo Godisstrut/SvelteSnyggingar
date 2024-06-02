@@ -3,6 +3,7 @@
     import { triviaGameIds } from '../stores.js';
     import { get } from 'svelte/store';
 
+    //Deklarera ett antal variabler för senare användning
     let triviaData = [];
     let currentIndex = 0;
     let userAnswer = '';
@@ -12,6 +13,7 @@
     let questionType = '';
     let answers = [];
 
+    //Funktion för att hämta frågor sant/falskt från API, använder difficulty som parameter
     async function getTrueOrFalseQuestions(difficulty) {
         try {
             const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=boolean`);
@@ -22,6 +24,7 @@
         }
     }
 
+    //Funktion för att hämta flervalsfrågor från API, använder difficulty som parameter
     async function getMultipleChoiceQuestions(difficulty) {
         try {
             const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=multiple`);
@@ -32,10 +35,12 @@
         }
     }
 
+    //Enkel funktion för att välja svårohetsgrad i spelet
     function selectedQuestionType(type) {
         questionType = type;
     }
 
+    //Börjar quizet efter vald svårighetsgrad
     function quizDifficulty(difficulty) {
         quizStarted = true;
 
@@ -46,11 +51,13 @@
         }
     }
 
+    //Funktion för att gå vidare till nästa fråga till dem är slut, ökar index för varje fråga
     function nextQuestion() {
         if (currentIndex < triviaData.length - 1) {
             currentIndex++;
             userAnswer = '';
         } else {
+            //Sätter gameFinished till true när alla frågor är besvarade
             gameFinished = true;
             const storedGameIds = get(triviaGameIds);
             const newGameIds = [...storedGameIds, answers];
@@ -59,10 +66,12 @@
         }
     }
 
+    //Funktion för att skicka vidare användarens svar, ger också poäng om svaret är korrekt
     function submitAnswer(answer) {
         if (answer === triviaData[currentIndex].correct_answer) {
             score++;
         }
+        //Lagrar användarens fråga och svar
         answers.push({
             question: triviaData[currentIndex].question,
             answer: answer,
@@ -73,9 +82,9 @@
         nextQuestion();
     }
 
+    //Funktion som ger ut olika svar beroende på användarens prestanda i quizet
     function resultMessage(score, total) {
-        const resultScore = (score / total) * 10;
-
+        const resultScore = (score / total) * 10; 
         if (resultScore === 10) {
             return '<span class="text-xl text-amber-600 font-bold">Utmärkt! Alla rätt, snyggt jobbat!</span>';
         } else if (resultScore >= 7) {
@@ -121,7 +130,7 @@
                         <Button class="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-8 text-xl rounded-full" on:click={() => submitAnswer('False')}>Falskt</Button>
                     </div>
                 {:else if questionType === 'multiple'}
-                    <div class="button-container flex justify-center mt-4 space-x-8">
+                    <div class="button-container flex flex-wrap justify-center mt-4 gap-4">
                         {#each [...triviaData[currentIndex].incorrect_answers, triviaData[currentIndex].correct_answer].sort() as answer}
                             <Button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-4 px-8 rounded-full" on:click={() => submitAnswer(answer)}>{answer}</Button>
                         {/each}
@@ -135,19 +144,6 @@
         <div class="flex flex-col items-center gap-10 pt-20 bg-cyan-300 h-80">
             <p class="text-xl font-semibold mt-10">Ditt resultat är {score}/{triviaData.length}</p>
             <p class="font-normal mt-5 text-center">{@html resultMessage(score, triviaData.length)}</p>
-            <div class="mt-5">  
-                <h2 class="text-lg font-bold flex justify-center">Dina svar:</h2>
-                <ul class="grid grid-cols-2 lg:grid-cols-5 p-5 ">
-                    {#each answers as userAnswer}
-                        <li class="mt-2 place-content-center">
-                            <p class="font-semibold">Fråga:</p>
-                            <p class="mb-2">{@html userAnswer.question}</p> 
-                            <p class="font-semibold">Ditt svar:{@html userAnswer.answer}</p> 
-                            <p class="font-semibold">Korrekt svar:{@html userAnswer.correctAnswer}</p> 
-                        </li>
-                    {/each}
-                </ul>
-            </div>
             <Button><a class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-full" href="/"> Home </Button>
         </div>
     {/if}
