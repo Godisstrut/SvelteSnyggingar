@@ -79,7 +79,7 @@
   {/if}
 </div>
 
-<div class="flex flex-col items-center mt-4">
+<div class="flex flex-col items-center my-10">
   <h1 class="text-xl font-bold mb-4">Results</h1>
   <ul class="flex flex-col space-y-2">
     {#each answers as { guess, answer, isCorrect }}

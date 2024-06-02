@@ -130,7 +130,7 @@
                         <Button class="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-8 text-xl rounded-full" on:click={() => submitAnswer('False')}>Falskt</Button>
                     </div>
                 {:else if questionType === 'multiple'}
-                    <div class="button-container flex flex-wrap justify-center mt-4 gap-4">
+                    <div class="button-container flex flex-wrap justify-center gap-1">
                         {#each [...triviaData[currentIndex].incorrect_answers, triviaData[currentIndex].correct_answer].sort() as answer}
                             <Button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-4 px-8 rounded-full" on:click={() => submitAnswer(answer)}>{answer}</Button>
                         {/each}
