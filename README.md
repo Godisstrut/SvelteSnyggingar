@@ -15,6 +15,8 @@ Svelte is the overall more lightweight and simpler framework to use in a small p
 
 3. Install dependencies: npm install
 
-4. Run the program with the development server: npm run dev
+4. Create a .env file in my-app that holds the API keys 
 
-5. Open your browser and go to 'http://localhost:5173' or simply click the link provided in the terminal
+5. Run the program with the development server: npm run dev
+
+6. Open your browser and go to 'http://localhost:5173' or simply click the link provided in the terminal
