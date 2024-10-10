@@ -35,7 +35,7 @@
         }
     }
 
-    //Enkel funktion för att välja svårohetsgrad i spelet
+    //Enkel funktion för att välja frågetyp i spelet
     function selectedQuestionType(type) {
         questionType = type;
     }
